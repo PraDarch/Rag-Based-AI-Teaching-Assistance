@@ -85,8 +85,8 @@ def create_presentation():
     accent_bar.fill.fore_color.rgb = COLOR_CYAN
     accent_bar.line.fill.background()
     
-    # Text container
-    title_box = slide1.shapes.add_textbox(Inches(1.2), Inches(2.2), Inches(11.0), Inches(4.0))
+    # Left Text Column (Title & Subtitle)
+    title_box = slide1.shapes.add_textbox(Inches(1.2), Inches(1.5), Inches(7.0), Inches(5.0))
     tf1 = title_box.text_frame
     tf1.word_wrap = True
     
@@ -99,26 +99,67 @@ def create_presentation():
     p_tag.space_after = Pt(14)
     
     p_title = tf1.add_paragraph()
-    p_title.text = "RAG-Based AI Teaching Assistant"
+    p_title.text = "RAG-Based AI\nTeaching Assistant"
     p_title.font.name = FONT_TITLE
-    p_title.font.size = Pt(46)
+    p_title.font.size = Pt(44)
     p_title.font.bold = True
     p_title.font.color.rgb = COLOR_WHITE
-    p_title.space_after = Pt(10)
+    p_title.space_after = Pt(14)
     
     p_sub = tf1.add_paragraph()
     p_sub.text = "Local Video-to-Text Transcription, Semantic Search, and Q&A System"
     p_sub.font.name = FONT_BODY
-    p_sub.font.size = Pt(18)
+    p_sub.font.size = Pt(16)
     p_sub.font.color.rgb = COLOR_WHITE
     p_sub.space_after = Pt(40)
     
     p_course = tf1.add_paragraph()
-    p_course.text = "Inspired by the Ultimate Job Ready Data Science Course (Code With Harry Project 3)"
+    p_course.text = "Inspired by the Ultimate Job Ready Data Science Course\n(Code With Harry Project 3)"
     p_course.font.name = FONT_BODY
-    p_course.font.size = Pt(13)
+    p_course.font.size = Pt(12)
     p_course.font.color.rgb = COLOR_CYAN
     p_course.font.italic = True
+
+    # Right Column: Project Team Card
+    team_bg = slide1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(8.6), Inches(1.5), Inches(3.9), Inches(4.5))
+    team_bg.fill.solid()
+    team_bg.fill.fore_color.rgb = RGBColor(30, 41, 59) # Slate 800 (#1E293B)
+    team_bg.line.color.rgb = COLOR_CYAN
+    team_bg.line.width = Pt(1.5)
+    
+    team_box = slide1.shapes.add_textbox(Inches(8.9), Inches(1.8), Inches(3.3), Inches(3.9))
+    tf_team = team_box.text_frame
+    tf_team.word_wrap = True
+    
+    pt = tf_team.paragraphs[0]
+    pt.text = "PROJECT TEAM"
+    pt.font.name = FONT_TITLE
+    pt.font.size = Pt(12)
+    pt.font.bold = True
+    pt.font.color.rgb = COLOR_CYAN
+    pt.space_after = Pt(18)
+    
+    members = [
+        ("Sagnik Banik", "1MS23CI103"),
+        ("Pramod Rai", "1MS23CI089"),
+        ("Priyanshu Kumar", "1MS23CI094"),
+        ("Yashraj Jha", "1MS23CI138")
+    ]
+    
+    for name, usn in members:
+        pn = tf_team.add_paragraph()
+        pn.text = name
+        pn.font.name = FONT_TITLE
+        pn.font.size = Pt(14)
+        pn.font.bold = True
+        pn.font.color.rgb = COLOR_WHITE
+        
+        pu = tf_team.add_paragraph()
+        pu.text = f"USN: {usn}"
+        pu.font.name = FONT_BODY
+        pu.font.size = Pt(11)
+        pu.font.color.rgb = RGBColor(148, 163, 184) # Slate 400 (#94A3B8)
+        pu.space_after = Pt(12)
 
     # ----------------------------------------------------
     # Slide 2: Problem Statement & Challenge
@@ -846,8 +887,12 @@ def create_presentation():
     pc.font.color.rgb = COLOR_WHITE
     
     # Save the presentation
-    prs.save("RAG_AI_Teaching_Assistant_Presentation.pptx")
-    print("Presentation created successfully as RAG_AI_Teaching_Assistant_Presentation.pptx!")
+    try:
+        prs.save("RAG_AI_Teaching_Assistant_Presentation.pptx")
+        print("Presentation created successfully as RAG_AI_Teaching_Assistant_Presentation.pptx!")
+    except PermissionError:
+        prs.save("RAG_AI_Teaching_Assistant_Presentation_v2.pptx")
+        print("Presentation was locked because it is open in PowerPoint. Saved successfully as RAG_AI_Teaching_Assistant_Presentation_v2.pptx!")
 
 if __name__ == "__main__":
     create_presentation()
