@@ -8,11 +8,17 @@ os.makedirs("jsons", exist_ok=True)
 audios = os.listdir("audios")
 audios_to_process = []
 
+# Check if the audios directory is completely empty
+audio_files = [f for f in audios if f.lower().endswith('.mp3')]
+if not audio_files:
+    print("\n" + "="*80)
+    print("WARNING: No audio files (.mp3) found in your 'audios/' directory!")
+    print("Please place your video files in 'videos/' and run 'python video_to_mp3.py' first.")
+    print("="*80 + "\n")
+    raise SystemExit("Exiting because 'audios/' is empty.")
+
 # Check which audio files actually need transcription
-for audio in audios:
-    if not audio.lower().endswith('.mp3'):
-        continue
-    
+for audio in audio_files:
     # Gracefully parse audio number and title
     if "_" in audio:
         number = audio.split("_")[0]
@@ -28,7 +34,7 @@ for audio in audios:
         audios_to_process.append((audio, number, title, output_path))
 
 if not audios_to_process:
-    print("All audio files are already transcribed! No Whisper processing needed.")
+    print("All audio files in 'audios/' are already transcribed! No new Whisper processing needed.")
 else:
     print(f"Found {len(audios_to_process)} audios to transcribe. Loading Whisper model large-v2...")
     import whisper
